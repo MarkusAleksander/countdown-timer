@@ -18,10 +18,18 @@
     <div id="mn_countdown_timer">
         <p class="label">Text Here</p>
         <div id="mn_cd-container">
-            <span id="mn_days">&nbsp;</span>
-            <span id="mn_hours">&nbsp;</span>
-            <span id="mn_minutes">&nbsp;</span>
-            <span id="mn_seconds">&nbsp;</span>
+            <span id="mn_days">
+                <!-- empty -->
+            </span>
+            <span id="mn_hours">
+                <!-- empty -->
+            </span>
+            <span id="mn_minutes">
+                <!-- empty -->
+            </span>
+            <span id="mn_seconds">
+                <!-- empty -->
+            </span>
         </div>
     </div>
     <script>
@@ -36,16 +44,17 @@
         };
         ready(function () {
             // EDITABLES
-            var _dateEnd = new Date('12/07/2019 12:00:00').getTime(), // MM/DD/YYYY HH:MM:SS
+            var _dateEnd = new Date('10/12/2019 12:00:00').getTime(), // MM/DD/YYYY HH:MM:SS
                 daysAsHours = false, // Set to true if days are to be calculated in hours (i.e display 48 hours instead of 1 day 24 hours)
+                returnNumbersInSpans = true, // Set to true if numbers should be individually split into spans
                 _daysHTML = document.querySelector('#mn_days'),
                 _hoursHTML = document.querySelector('#mn_hours'),
                 _minutesHTML = document.querySelector('#mn_minutes'),
                 _secondsHTML = document.querySelector('#mn_seconds'),
                 // DO NOT MODIFY BELOW THIS LINE
                 timeLeft = 0,
-                timeNow = 0,,
-                _version = "2.1.0",
+                timeNow = 0,
+                _version = "2.1.5",
                 _d = 1000 * 60 * 60 * 24,
                 _h = 1000 * 60 * 60,
                 _m = 1000 * 60,
@@ -55,19 +64,25 @@
                     timeNow = new Date().getTime();
                     timeLeft = _dateEnd - timeNow;
                     if (!daysAsHours) {
-                        _daysHTML.textContent = str_pad(Math.floor(timeLeft / _d));
+                        _daysHTML.innerHTML = processValue(Math.floor(timeLeft / _d));
                     }
-                    _hoursHTML.textContent = daysAsHours ? str_pad(Math.floor((timeLeft % _d) / _h) + Math.floor(timeLeft / _d) * 24) : str_pad(Math.floor((timeLeft % _d) / _h));
-                    _minutesHTML.textContent = str_pad(Math.floor((timeLeft % _h) / _m));
-                    _secondsHTML.textContent = str_pad(Math.floor((timeLeft % _m) / 1000));
+                    _hoursHTML.innerHTML = daysAsHours ? processValue(Math.floor((timeLeft % _d) / _h) + Math.floor(timeLeft / _d) * 24) : processValue(Math.floor((timeLeft % _d) / _h));
+                    _minutesHTML.innerHTML = processValue(Math.floor((timeLeft % _h) / _m));
+                    _secondsHTML.innerHTML = processValue(Math.floor((timeLeft % _m) / 1000));
                     if (timeLeft < 0) {
-                        document.querySelector('#mn_cd-container').textContent = 'EXPIRED';
+                        document.querySelector('#mn_cd-container').innerHTML = 'EXPIRED';
                     } else {
                         window.setTimeout(updateCountdown, 1000);
                     }
                 })();
+                function processValue(v) {
+                    return returnNumbersInSpans ? split_nums(str_pad(v)) : str_pad(v);
+                }
                 function str_pad(n) {
                     return String("0" + n).slice(-2);
+                }
+                function split_nums(n) {
+                    return n.split("").map(function (x) { return "<span>" + x + "</span>" }).join("");
                 }
                 timerSet = 1;
             }
