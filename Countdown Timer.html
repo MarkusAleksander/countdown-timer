@@ -45,7 +45,7 @@
                 // DO NOT MODIFY BELOW THIS LINE
                 _timeLeft: 0,
                 _timeNow: 0,
-                _version: "2.3.0",
+                _version: "2.3.5",
                 _d: 1000 * 60 * 60 * 24,
                 _h: 1000 * 60 * 60,
                 _m: 1000 * 60,
@@ -110,7 +110,15 @@
                 return _countdownData._returnNumbersInSpans ? _split_nums(_str_pad(v)) : _str_pad(v);
             }
             function _str_pad(n) {
-                return String("0" + n).slice(-2);
+                let numLength = String(n).length, lx;
+
+                if (numLength < 2) {
+                    lx = -2;
+                } else {
+                    lx = numLength * -1;
+                }
+
+                return String("0" + n).slice(lx);
             }
             function _split_nums(n) {
                 return n.split("").map(function (x) { return "<span class='countdown__numbers'>" + x + "</span>" }).join("");
