@@ -2,8 +2,8 @@
 
 This is the spiritual successor to my previous project kell-clock
 
-Version: 2.3.5
+Version: 3.0.0
 
 Updates:
 
--   Change string_pad function
+-   Major Overhaul to prototype object pattern

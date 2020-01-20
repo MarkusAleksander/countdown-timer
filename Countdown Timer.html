@@ -5,150 +5,24 @@
     Developed by Mark Holden
 -->
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-
-<body>
-    <!--  -->
-    <div id="cdt_countdown_timer">
-        <p class="label">Text Here</p>
-        <div id="cdt_cd-container">
-            <span id="cdt_days">
-                <!-- empty -->
-            </span>
-            <span id="cdt_hours">
-                <!-- empty -->
-            </span>
-            <span id="cdt_minutes">
-                <!-- empty -->
-            </span>
-            <span id="cdt_seconds">
-                <!-- empty -->
-            </span>
+    <body>
+        <!--  -->
+        <div id="cdt_countdown_timer">
+            <p class="label">Text Here</p>
+            <div class="countdown-container--1">
+                <!-- leave empty -->
+            </div>
+            <div class="countdown-container--1">
+                <!-- leave empty -->
+            </div>
         </div>
-    </div>
-    <script>
-        const countdownTimerModule = (function countdownTimerModule() {
-            const _countdownData = {
-                _dateEnd: null, // MM/DD/YYYY HH:MM:SS
-                _daysAsHours: false, // Set to true if days are to be calculated in hours (i.e display 48 hours instead of 1 day 24 hours)
-                _returnNumbersInSpans: false, // Set to true if numbers should be individually split into spans
-                _daysHTML: null,
-                _hoursHTML: null,
-                _minutesHTML: null,
-                _secondsHTML: null,
-                // DO NOT MODIFY BELOW THIS LINE
-                _timeLeft: 0,
-                _timeNow: 0,
-                _version: "2.3.5",
-                _d: 1000 * 60 * 60 * 24,
-                _h: 1000 * 60 * 60,
-                _m: 1000 * 60,
-                _timerSet: false
-            }
-            function _getVersion() {
-                return _countdownData._version;
-            }
-            function isTimerSet() {
-                return _countdownData._timerSet;
-            }
-            function _getElements() {
-                _countdownData._daysHTML = document.querySelectorAll('.cdt_days');
-                _countdownData._hoursHTML = document.querySelectorAll('.countdown-r2 > #countdown__timer > .countdown__hours');
-                _countdownData._minutesHTML = document.querySelectorAll('.countdown-r2 > #countdown__timer > .countdown__minutes');
-                _countdownData._secondsHTML = document.querySelectorAll('.countdown-r2 > #countdown__timer > .countdown__seconds');
-            }
-            function _initCountdown(endDate, daysAsHours, numbersInSpans) {
-                _getElements();
-                _countdownData._dateEnd = new Date(endDate).getTime();
-                _countdownData._daysAsHours = daysAsHours;
-                _countdownData._returnNumbersInSpans = numbersInSpans;
-
-                _countdownData._timerSet = true;
-            }
-            function _startCountdown() {
-                if (isTimerSet()) {
-                    _updateCountdown();
-                }
-            }
-            function _updateCountdown() {
-                _countdownData._timeNow = new Date().getTime();
-                _countdownData._timeLeft = _countdownData._dateEnd - _countdownData._timeNow;
-                if (!_countdownData._daysAsHours) {
-                    let _dv = _processValue(Math.floor(_countdownData._timeLeft / _countdownData._d));
-                    _forEachNode(_countdownData._daysHTML, function (el) {
-                        el.innerHTML = _dv;
-                    });
-                }
-                let _hv = _countdownData._daysAsHours ? _processValue(Math.floor((_countdownData._timeLeft % _countdownData._d) / _countdownData._h) + Math.floor(_countdownData._timeLeft / _countdownData._d) * 24) : _processValue(Math.floor((_countdownData._timeLeft % _countdownData._d) / _countdownData._h));
-                _forEachNode(_countdownData._hoursHTML, function (el) {
-                    el.innerHTML = _hv;
-                });
-                let _mv = _processValue(Math.floor((_countdownData._timeLeft % _countdownData._h) / _countdownData._m));
-                _forEachNode(_countdownData._minutesHTML, function (el) {
-                    el.innerHTML = _mv;
-                });
-                let _sv = _processValue(Math.floor((_countdownData._timeLeft % _countdownData._m) / 1000));
-                _forEachNode(_countdownData._secondsHTML, function (el) {
-                    el.innerHTML = _sv;
-                });
-                if (_countdownData._timeLeft < 0) {
-                    _forEachNode(document.querySelector('.countdown-r2 > #countdown__timer'), function (el) {
-                        el.innerHTML = 'EXPIRED';
-                    });
-                    _countdownData._timerSet = false;
-                } else {
-                    window.setTimeout(_updateCountdown, 1000);
-                }
-            }
-            function _processValue(v) {
-                return _countdownData._returnNumbersInSpans ? _split_nums(_str_pad(v)) : _str_pad(v);
-            }
-            function _str_pad(n) {
-                let numLength = String(n).length, lx;
-
-                if (numLength < 2) {
-                    lx = -2;
-                } else {
-                    lx = numLength * -1;
-                }
-
-                return String("0" + n).slice(lx);
-            }
-            function _split_nums(n) {
-                return n.split("").map(function (x) { return "<span class='countdown__numbers'>" + x + "</span>" }).join("");
-            }
-            function _forEachNode(nodeList, callback) {
-                Array.prototype.forEach.call(nodeList, callback);
-            }
-            return {
-                getVersion: _getVersion,
-                initCountdown: _initCountdown,
-                startCountdown: _startCountdown
-            }
-        }());
-        if (typeof window.ready !== "function") {
-            window.ready = function ready(fn) {
-                if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
-                    fn();
-                } else {
-                    document.addEventListener('DOMContentLoaded', fn);
-                }
-            };
-        };
-        ready(function () {
-            // End Time of countdown as MM/DD/YYYY HH:MM:SS, display days in hours?, split numbers into spans?
-            countdownTimerModule.initCountdown('11/20/2019 12:00:00', true, true);
-            countdownTimerModule.startCountdown();
-        });
-
-    </script>
-    <!--  -->
-</body>
-
+        <script src="countdownTimer.js"></script>
+    </body>
 </html>
