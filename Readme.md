@@ -2,8 +2,9 @@
 
 This is the spiritual successor to my previous project kell-clock
 
-Version: 2.1.5
+Version: 2.2.0
 
 Updates:
 
--   Addition of splitting number values into spans
+-   Migrated to Module Pattern
+-   Additional functionality

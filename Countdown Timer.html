@@ -15,24 +15,91 @@
 
 <body>
     <!--  -->
-    <div id="mn_countdown_timer">
+    <div id="cdt_countdown_timer">
         <p class="label">Text Here</p>
-        <div id="mn_cd-container">
-            <span id="mn_days">
+        <div id="cdt_cd-container">
+            <span id="cdt_days">
                 <!-- empty -->
             </span>
-            <span id="mn_hours">
+            <span id="cdt_hours">
                 <!-- empty -->
             </span>
-            <span id="mn_minutes">
+            <span id="cdt_minutes">
                 <!-- empty -->
             </span>
-            <span id="mn_seconds">
+            <span id="cdt_seconds">
                 <!-- empty -->
             </span>
         </div>
     </div>
     <script>
+        const countdownTimerModule = (function countdownTimerModule() {
+            const _countdownData = {
+                _dateEnd: null, // MM/DD/YYYY HH:MM:SS
+                _daysAsHours: false, // Set to true if days are to be calculated in hours (i.e display 48 hours instead of 1 day 24 hours)
+                _returnNumbersInSpans: false, // Set to true if numbers should be individually split into spans
+                _daysHTML: document.querySelector('#cdt_days'),
+                _hoursHTML: document.querySelector('#cdt_hours'),
+                _minutesHTML: document.querySelector('#cdt_minutes'),
+                _secondsHTML: document.querySelector('#cdt_seconds'),
+                // DO NOT MODIFY BELOW THIS LINE
+                _timeLeft: 0,
+                _timeNow: 0,
+                _version: "2.2.0",
+                _d: 1000 * 60 * 60 * 24,
+                _h: 1000 * 60 * 60,
+                _m: 1000 * 60,
+                _timerSet: false
+            }
+            function _getVersion() {
+                return _countdownData._version;
+            }
+            function isTimerSet() {
+                return _countdownData._timerSet;
+            }
+            function _initCountdown(endDate, daysAsHours, numbersInSpans) {
+                _countdownData._dateEnd = new Date(endDate).getTime();
+                _countdownData._daysAsHours = daysAsHours;
+                _countdownData._returnNumbersInSpans = numbersInSpans;
+
+                _countdownData._timerSet = true;
+            }
+            function _startCountdown() {
+                if (isTimerSet()) {
+                    _updateCountdown();
+                }
+            }
+            function _updateCountdown() {
+                _countdownData._timeNow = new Date().getTime();
+                _countdownData._timeLeft = _countdownData._dateEnd - _countdownData._timeNow;
+                if (!_countdownData._daysAsHours) {
+                    _countdownData._daysHTML.innerHTML = _processValue(Math.floor(_countdownData._timeLeft / _countdownData._d));
+                }
+                _countdownData._hoursHTML.innerHTML = _countdownData._daysAsHours ? _processValue(Math.floor((_countdownData._timeLeft % _countdownData._d) / _countdownData._h) + Math.floor(_countdownData._timeLeft / _countdownData._d) * 24) : _processValue(Math.floor((_countdownData._timeLeft % _countdownData._d) / _countdownData._h));
+                _countdownData._minutesHTML.innerHTML = _processValue(Math.floor((_countdownData._timeLeft % _countdownData._h) / _countdownData._m));
+                _countdownData._secondsHTML.innerHTML = _processValue(Math.floor((_countdownData._timeLeft % _countdownData._m) / 1000));
+                if (_countdownData._timeLeft < 0) {
+                    document.querySelector('#cdt_cd-container').innerHTML = 'EXPIRED';
+                    _countdownData._timerSet = false;
+                } else {
+                    window.setTimeout(_updateCountdown, 1000);
+                }
+            }
+            function _processValue(v) {
+                return _countdownData._returnNumbersInSpans ? _split_nums(_str_pad(v)) : _str_pad(v);
+            }
+            function _str_pad(n) {
+                return String("0" + n).slice(-2);
+            }
+            function _split_nums(n) {
+                return n.split("").map(function (x) { return "<span>" + x + "</span>" }).join("");
+            }
+            return {
+                getVersion: _getVersion,
+                initCountdown: _initCountdown,
+                startCountdown: _startCountdown
+            }
+        }());
         if (typeof window.ready !== "function") {
             window.ready = function ready(fn) {
                 if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
@@ -43,49 +110,8 @@
             };
         };
         ready(function () {
-            // EDITABLES
-            var _dateEnd = new Date('10/12/2019 12:00:00').getTime(), // MM/DD/YYYY HH:MM:SS
-                daysAsHours = false, // Set to true if days are to be calculated in hours (i.e display 48 hours instead of 1 day 24 hours)
-                returnNumbersInSpans = true, // Set to true if numbers should be individually split into spans
-                _daysHTML = document.querySelector('#mn_days'),
-                _hoursHTML = document.querySelector('#mn_hours'),
-                _minutesHTML = document.querySelector('#mn_minutes'),
-                _secondsHTML = document.querySelector('#mn_seconds'),
-                // DO NOT MODIFY BELOW THIS LINE
-                timeLeft = 0,
-                timeNow = 0,
-                _version = "2.1.5",
-                _d = 1000 * 60 * 60 * 24,
-                _h = 1000 * 60 * 60,
-                _m = 1000 * 60,
-                timerSet = 0;
-            if (timerSet == 0) {
-                (function updateCountdown() {
-                    timeNow = new Date().getTime();
-                    timeLeft = _dateEnd - timeNow;
-                    if (!daysAsHours) {
-                        _daysHTML.innerHTML = processValue(Math.floor(timeLeft / _d));
-                    }
-                    _hoursHTML.innerHTML = daysAsHours ? processValue(Math.floor((timeLeft % _d) / _h) + Math.floor(timeLeft / _d) * 24) : processValue(Math.floor((timeLeft % _d) / _h));
-                    _minutesHTML.innerHTML = processValue(Math.floor((timeLeft % _h) / _m));
-                    _secondsHTML.innerHTML = processValue(Math.floor((timeLeft % _m) / 1000));
-                    if (timeLeft < 0) {
-                        document.querySelector('#mn_cd-container').innerHTML = 'EXPIRED';
-                    } else {
-                        window.setTimeout(updateCountdown, 1000);
-                    }
-                })();
-                function processValue(v) {
-                    return returnNumbersInSpans ? split_nums(str_pad(v)) : str_pad(v);
-                }
-                function str_pad(n) {
-                    return String("0" + n).slice(-2);
-                }
-                function split_nums(n) {
-                    return n.split("").map(function (x) { return "<span>" + x + "</span>" }).join("");
-                }
-                timerSet = 1;
-            }
+            countdownTimerModule.initCountdown('10/12/2019 12:00:00', true, true);
+            countdownTimerModule.startCountdown();
         });
     </script>
     <!--  -->
