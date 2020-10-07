@@ -1,16 +1,16 @@
 function CountdownTimer(data) {
     this._dateEnd = data.dateEnd || 0;
-    this._daysAsHours = data.daysAsHours || true;
-    this._returnNumbersInSpans = data.returnNumbersInSpans || false;
+    this._daysAsHours = data.daysAsHours === "";
+    this._returnNumbersInSpans = data.returnNumbersInSpans === "";
     this._countdownElement = data.countdownElement || null;
-    this._displayAnnotations = data.displayAnnotations || false;
+    this._displayAnnotations = data.displayAnnotations === "";
     this._daysHTML = document.createElement('span');
     this._hoursHTML = document.createElement('span');
     this._minutesHTML = document.createElement('span');
     this._secondsHTML = document.createElement('span');
     this._timeLeft = 0;
     this._timeNow = 0;
-    this._version = "3.1.0";
+    this._version = "3.2.0";
     this._d = 1000 * 60 * 60 * 24;
     this._h = 1000 * 60 * 60;
     this._m = 1000 * 60;
@@ -132,7 +132,7 @@ CountdownTimer.prototype._forEachNode = function _forEachNode(nodeList, callback
             let ctdwn = new CountdownTimer({
                 dateEnd: c.getAttribute("data-countdown"),
                 displayAnnotations: c.getAttribute("data-display-annotations"),
-                daysAsHours: c.getAttribute("data-display-days_as_hours"),
+                daysAsHours: c.getAttribute("data-display-days-as-hours"),
                 returnNumbersInSpans: c.getAttribute("data-display-spans"),
                 countdownElement: c
             })._initCountdown()._startCountdown();
