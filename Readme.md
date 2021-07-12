@@ -2,15 +2,16 @@
 
 This is the spiritual successor to my previous project kell-clock
 
-Version: 3.2.0
+Version: 3.3.0
 
 Updates:
 
--   Major Overhaul to prototype object pattern
+-   Bug fixes
+-   Updated docs
 
 # Instructions
 
-Minimum Set up for timer element is like so:
+Minimum required set up for timer element is like so:
 
 ```html
 <div class="countdown__container" data-countdown="11/12/2019 12:00:00">
@@ -18,14 +19,16 @@ Minimum Set up for timer element is like so:
 </div>
 ```
 
-Inner content should ideally be empty.
+Inner content should be empty.
 
 Countdown target should be set on the HTML as data-countdown and is in the format:
 MM/DD/YYYY HH:MM:SS
 
 When the timer has passed, the content will say EXPIRED
 
-If you want to display time annotations (i.e. 10 hours, 10 minutes, 10 seconds) then use:
+All content will be unstyled.
+
+If you want to display time annotations (10 hours, 10 minutes, 10 seconds) then add:
 
 ```
 data-display-annotations="true"
@@ -43,7 +46,29 @@ Like so:
 </div>
 ```
 
-All content will be unstyled.
+Alternatively, if you want different annotations, you can use CSS to add pseudo content in.
 
 If you need the numbers split into spans so that you can individually style them, use:
 data-display-spans="true"
+
+```html
+<div
+    class="countdown__container"
+    data-countdown="11/12/2019 12:00:00"
+    data-display-spans="true"
+>
+    <!-- leave empty -->
+</div>
+```
+
+Sometimes you may need the days to be incorporated into the hours value (i,e. so you can have 48hours in the countdown). For this, just add data-display-days-as-hours="true"
+
+```html
+<div
+    class="countdown__container"
+    data-countdown="11/12/2019 12:00:00"
+    data-display-days-as-hours="true"
+>
+    <!-- leave empty -->
+</div>
+```

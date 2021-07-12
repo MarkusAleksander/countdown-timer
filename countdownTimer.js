@@ -1,20 +1,25 @@
 function CountdownTimer(data) {
+    // * countdown target
     this._dateEnd = data.dateEnd || 0;
-    this._daysAsHours = data.daysAsHours === "";
-    this._returnNumbersInSpans = data.returnNumbersInSpans === "";
+    // * countdown element
     this._countdownElement = data.countdownElement || null;
-    this._displayAnnotations = data.displayAnnotations === "";
+    // * customisations
+    this._daysAsHours = data.daysAsHours !== null;
+    this._returnNumbersInSpans = data.returnNumbersInSpans !== null;
+    this._displayAnnotations = data.displayAnnotations !== null;
+    // * prep
     this._daysHTML = document.createElement('span');
     this._hoursHTML = document.createElement('span');
     this._minutesHTML = document.createElement('span');
     this._secondsHTML = document.createElement('span');
     this._timeLeft = 0;
     this._timeNow = 0;
-    this._version = "3.2.0";
+    this._timerSet = false;
+    // * constants
+    this._version = "3.3.0";
     this._d = 1000 * 60 * 60 * 24;
     this._h = 1000 * 60 * 60;
     this._m = 1000 * 60;
-    this._timerSet = false;
 };
 CountdownTimer.prototype._getVersion = function _getVersion() {
     return this._version;

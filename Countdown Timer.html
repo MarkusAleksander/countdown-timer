@@ -8,73 +8,51 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-    <meta
-        http-equiv="X-UA-Compatible"
-        content="ie=edge"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
 
 <body>
     <!--  -->
     <div id="cdt_countdown_timer">
-        <p class="label">Text Here</p>
-        <div
-            class="countdown__container"
-            data-countdown="11/12/2020"
-            data-display-annotations
-        >
+        <p>Default, no customisation - MM:DD:YYYY HH:MM:SS</p>
+        <div class="countdown__container" data-countdown="12/11/2021 06:30:30">
             <!-- leave empty -->
         </div>
-        <div
-            class="countdown__container"
-            data-countdown="12/11/2020 00:00:00"
-        >
+        <p>With annotations</p>
+        <div class="countdown__container" data-countdown="12/10/2021 00:00:00" data-display-annotations="true">
             <!-- leave empty -->
         </div>
-        <div
-            class="countdown__container"
-            data-countdown="12/10/2020 00:00:00"
-            data-display-annotations
-        >
+        <p>Displaying days as hours</p>
+        <div class="countdown__container" data-countdown="12/10/2021 00:00:00" data-display-days-as-hours="true">
             <!-- leave empty -->
         </div>
-        <div
-            class="countdown__container"
-            data-countdown="12/10/2020 00:00:00"
-            data-display-days-as-hours
-        >
+        <p>Displaying days as hours and annotations</p>
+        <div class="countdown__container" data-countdown="12/10/2021 00:00:00" data-display-annotations="true"
+            data-display-days-as-hours="true">
             <!-- leave empty -->
         </div>
-        <div
-            class="countdown__container"
-            data-countdown="12/10/2020 00:00:00"
-            data-display-annotations
-            data-display-days-as-hours
-        >
+        <p>With individual numbers in spans</p>
+        <div class="countdown__container" data-countdown="12/10/2021 00:00:00" data-display-spans="true">
             <!-- leave empty -->
         </div>
-        <div
-            class="countdown__container"
-            data-countdown="12/10/2020 00:00:00"
-            data-display-annotations
-            data-display-spans
-        >
-            <!-- leave empty -->
-        </div>
-        <div
-            class="countdown__container"
-            data-countdown="12/10/2020 00:00:00"
-            data-display-annotations
-            data-display-spans
-        >
+        <p>With individual numbers in spans and annotations</p>
+        <div class="countdown__container" data-countdown="12/10/2021 00:00:00" data-display-annotations="true"
+            data-display-spans="true">
             <!-- leave empty -->
         </div>
     </div>
+    <script>
+        // * set a date that is always 15 days in the future from now
+        const target_date = new Date(new Date().getTime() + (15 * 24 * 60 * 60 * 1000));
+        const formatted_date =
+            `${("0" + (target_date.getMonth() + 1)).slice(-2)}/${("0" + target_date.getDate()).slice(-2)}/${target_date.getFullYear()} ${("0" + target_date.getHours()).slice(-2)}:${("0" + target_date.getMinutes()).slice(-2)}:${("0" + target_date.getSeconds()).slice(-2)}`;
+        let containers = document.querySelectorAll(".countdown__container");
+        for (let i = 0; i < containers.length; i++) {
+            containers[i].setAttribute("data-countdown", formatted_date);
+        }
+    </script>
     <script src="countdownTimer.js"></script>
 
 </body>
